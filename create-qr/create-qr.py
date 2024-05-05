@@ -5,7 +5,7 @@ import json
 import sqlite3
 import qrcode
 
-conn = sqlite3.connect('../create-db/database.db')
+conn = sqlite3.connect('../instance/database.db')
 cursor = conn.cursor()
 
 cursor.execute("SELECT * FROM clients")

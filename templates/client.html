@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Информация о пользователе</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+          max-width: 600px;
+          padding: 20px;
+          background-color: #000;
+          border-radius: 10px;
+          box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+          height: auto;
+          max-height: 360px;
+          margin: 100px;
+
+    }
+    .info-item {
+      margin-bottom: 20px;
+    }
+    .info-item label {
+      font-weight: bold;
+    }
+    .info-item span {
+      color: #ff0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align: center;">Информация о пользователе</h2>
+    <div class="info-item">
+      <label>ID:</label>
+      <span>{{data.id}}</span>
+    </div>
+    <div class="info-item">
+      <label>Имя:</label>
+      <span>{{data.name}}</span>
+    </div>
+    <div class="info-item">
+      <label>Номер телефона:</label>
+      <span>{{data.phone_number}}</span>
+    </div>
+    <div class="info-item">
+      <label>Дата подписания:</label>
+      <span>{{data.date_signing}}</span>
+    </div>
+    <div class="info-item">
+      <label>Дата активации:</label>
+      <span>{{data.activate_date}}</span>
+    </div>
+    <div class="info-item">
+      <label>Заморозка:</label>
+      <span>{{data.freezing}}</span>
+    </div>
+    <div class="info-item">
+      <label>Номер абонемента:</label>
+      <span>{{data.subscription_number}}</span>
+    </div>
+  </div>
+</body>
+</html>

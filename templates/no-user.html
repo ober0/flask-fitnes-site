@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пользователь не найден</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      background-color: #000;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+      margin: 100px;
+      max-height: 280px;
+    }
+    .message {
+      text-align: center;
+    }
+    .message h1 {
+      margin-bottom: 20px;
+    }
+    .message h3 {
+      margin-bottom: 20px;
+    }
+    a {
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="message">
+      <h1>Пользователь не найден</h1>
+      <h3>Извините, информация о пользователе отсутствует в базе данных.</h3>
+      <br>
+      <p id="timer" >Переадрессация назад через 3сек</p>
+      <p><a href="/">Или нажмите сюда</a></p>
+    </div>
+  </div>
+
+  <script !src="">
+    function updateTimer() {
+      document.getElementById('timer').innerText = "Переадрессация назад через " + time/1000 + " сек";
+      if (time <= 0){
+        window.location.href = '/';
+      }
+      else {
+        time -= 100;
+        setTimeout(updateTimer, 100);
+      }
+    }
+    var time = 3000;
+    updateTimer();
+
+  </script>
+</body>
+</html>

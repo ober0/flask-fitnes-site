@@ -9,7 +9,7 @@ file = 'file.xlsx'
 df = pd.read_excel(file)
 data = df.to_dict('records')
 
-conn = sqlite3.connect('database.db')
+conn = sqlite3.connect('../instance/database.db')
 cursor = conn.cursor()
 
 cursor.execute('''
