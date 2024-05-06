@@ -47,7 +47,9 @@
     </div>
 
     <form action="/process" method="post" style="text-align: center;">
-      <input type="hidden" name="id" value="{{data.subscription_number}}">
+      <input type="hidden" name="id" value="{{data.id}}">
+      <input type="hidden" name="abn_id" value="{{data.subscription_number}}">
+      <input type="hidden" name="name" value="{{data.name}}">
       <button class="button" type="submit" name="action" value="arrival">Приход</button>
       <button class="button" type="submit" name="action" value="edit">Изменить</button>
       <button class="button" type="submit" name="action" value="back">На главную</button>

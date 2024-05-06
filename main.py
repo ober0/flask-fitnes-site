@@ -31,6 +31,7 @@ class Clients(db.Model):
 class Arrivals(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     abn_id = db.Column(db.String(80))
+    name = db.Column(db.String(100))
     date_arrival = db.Column(db.DateTime)
     def __repr__(self):
         return '<id %r>' % self.id
@@ -54,11 +55,11 @@ def index():
 def process():
     action = request.form['action']
     if action == 'arrival':
-        arrival = Arrivals(abn_id = request.form['id'], date_arrival = datetime.datetime.now())
+        arrival = Arrivals(abn_id = request.form['abn_id'], name = request.form['name'], date_arrival = datetime.datetime.now())
         try:
             db.session.add(arrival)
             db.session.commit()
-            return redirect(f'/client?id={request.form["id"]}&arrival=success')
+            return redirect(f'/client?id={request.form["abn_id"]}&arrival=success')
         except Exception as e:
             db.session.rollback()
             print(e)
@@ -66,7 +67,7 @@ def process():
     elif action == 'back':
         return redirect('/')
     elif action == 'edit':
-        user = Clients.query.filter_by(subscription_number=request.form['id']).first()
+        user = Clients.query.filter_by(id=request.form['id']).first()
         user_data = {
             'id': user.id,
             'name': user.name,
@@ -82,8 +83,8 @@ def process():
 
 @app.route('/edit', methods=['POST'])
 def edit():
-    client = Clients.query.filter_by(id=request.form['id']).first()
-    client.name = request.form['name']
+    client = Clients.query.filter_by(subscription_number=request.form['subscription_number']).first()
+    client.name = request.form.get('name')
     client.phone_number = request.form['number']
     client.date_signing = request.form['date_signing']
     client.activate_date = request.form['activate_date']
@@ -123,26 +124,48 @@ def new_subscription():
 @app.route('/client', methods=['GET'])
 def client():
     arrival = request.args.get('arrival')
+    if arrival == 'success':
+        arrival = 'true'
+    else:
+        arrival = 'false'
     client_subscription_number = str(request.args.get('id'))
-    client = Clients.query.filter_by(subscription_number=client_subscription_number).first()
+    if request.args.get('table_id'):
+        client = Clients.query.filter_by(id=request.args.get('table_id')).all()
+    else:
+        client = Clients.query.filter_by(subscription_number=client_subscription_number).all()
     if client:
-        data = {
-            'id': client.id,
-            'name': client.name,
-            'phone_number': client.phone_number,
-            'date_signing': client.date_signing,
-            'activate_date': client.activate_date,
-            'freezing': client.freezing,
-            'subscription_number': client_subscription_number,
-            'summa': client.summa,
-            'time': client.time
-        }
-        if arrival == 'success':
-            arrival = 'true'
-        else:
-            arrival = 'false'
+        if len(client) == 1:
+            client = client[0]
+            data = {
+                'id': client.id,
+                'name': client.name,
+                'phone_number': client.phone_number,
+                'date_signing': client.date_signing,
+                'activate_date': client.activate_date,
+                'freezing': client.freezing,
+                'subscription_number': client.subscription_number,
+                'summa': client.summa,
+                'time': client.time
+            }
 
-        return render_template('client.html', data=data, arrival=arrival)
+
+            return render_template('client.html', data=data, arrival=arrival)
+        else:
+            datas = []
+            for client in client:
+                data = {
+                    'id': client.id,
+                    'name': client.name,
+                    'phone_number': client.phone_number,
+                    'date_signing': client.date_signing,
+                    'activate_date': client.activate_date,
+                    'freezing': client.freezing,
+                    'subscription_number': client_subscription_number,
+                    'summa': client.summa,
+                    'time': client.time
+                }
+                datas.append(data)
+            return render_template('clients.html', data=datas, arrival=arrival)
     else:
         return render_template('no-user.html')
 

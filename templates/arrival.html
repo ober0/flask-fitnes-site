@@ -24,7 +24,7 @@
                 {% for visit in data %}
                 <tr>
                     <td>{{ visit.id }}</td>
-                    <td>{{ visit.abn_id }}</td>
+                    <td>{{ visit.abn_id }} {{visit.name}}</td>
                     {% if date != 'Все время' %}
                         <td>{{ visit.date_arrival.strftime('%H:%M:%S') }}</td>
                     {% else %}
