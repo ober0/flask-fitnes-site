@@ -37,6 +37,14 @@
       <label>Номер абонемента:</label>
       <span>{{data.subscription_number}}</span>
     </div>
+    <div class="info-item">
+      <label>Сумма:</label>
+      <span>{{data.summa}}</span>
+    </div>
+    <div class="info-item">
+      <label>Время посещения:</label>
+      <span>{{data.time}}</span>
+    </div>
 
     <form action="/process" method="post" style="text-align: center;">
       <input type="hidden" name="id" value="{{data.subscription_number}}">

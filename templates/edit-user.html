@@ -37,6 +37,14 @@
             <label for="subscription_number">Номер абонемента:</label>
             <input type="text" id="subscription_number" name="subscription_number" value="{{ data.subscription_number }}" required>
         </div>
+        <div class="form-group">
+            <label for="summa">Сумма:</label>
+            <input type="text" id="summa" name="summa" value="{{ data.summa }}" required>
+        </div>
+        <div class="form-group">
+            <label for="time">Время:</label>
+            <input type="text" id="time" name="time" value="{{ data.time }}" required>
+        </div>
         <div style="text-align: center">
             <button type="button" class="btn-edit" onclick="confirmEdit()">Редактировать</button>
             <button type="button" class="btn-delete" onclick="confirmDelete({{ data.id }})">Удалить</button>

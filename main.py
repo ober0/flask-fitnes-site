@@ -21,6 +21,8 @@ class Clients(db.Model):
     activate_date = db.Column(db.String(100))
     freezing = db.Column(db.String(100))
     subscription_number = db.Column(db.String(100))
+    summa = db.Column(db.String(100))
+    time = db.Column(db.String(100))
 
     def __repr__(self):
         return '<id %r>' % self.id
@@ -72,7 +74,9 @@ def process():
             'date_signing': user.date_signing,
             'activate_date': user.activate_date,
             'freezing': user.freezing,
-            'subscription_number': user.subscription_number
+            'subscription_number': user.subscription_number,
+            'summa': user.summa,
+            'time': user.time,
         }
         return render_template('edit-user.html', data=user_data)
 
@@ -85,6 +89,8 @@ def edit():
     client.activate_date = request.form['activate_date']
     client.freezing = request.form['freezing']
     client.subscription_number = request.form['subscription_number']
+    client.summa = request.form['summa']
+    client.time = request.form['time']
     try:
         db.session.commit()
         return redirect(f'/client?id={client.subscription_number}&arrival=success')
@@ -103,7 +109,9 @@ def new_subscription():
                          date_signing=request.form['date_signing'],
                          activate_date=request.form['activate_date'],
                          freezing=request.form['freezing'],
-                         subscription_number=request.form['subscription_number']
+                         subscription_number=request.form['subscription_number'],
+                         summa =request.form['summa'],
+                         time = request.form['time']
                          )
         try:
             db.session.add(client)
@@ -125,7 +133,9 @@ def client():
             'date_signing': client.date_signing,
             'activate_date': client.activate_date,
             'freezing': client.freezing,
-            'subscription_number': client_subscription_number
+            'subscription_number': client_subscription_number,
+            'summa': client.summa,
+            'time': client.time
         }
         if arrival == 'success':
             arrival = 'true'
@@ -176,7 +186,9 @@ def test():
                      'Дата подписания': client.date_signing,
                      'Дата активации': client.activate_date,
                      'Заморозка': client.freezing,
-                     'Номер абонемента': client.subscription_number}
+                     'Номер абонемента': client.subscription_number,
+                     'Сумма': client.summa,
+                     'Время': client.time}
                     for client in clients]
     return jsonify(clients_data)
 
