@@ -11,19 +11,20 @@
       font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
+      align-items: center;
       height: 100vh;
       margin: 0;
     }
     .container {
-          max-width: 600px;
-          padding: 20px;
-          background-color: #000;
-          border-radius: 10px;
-          box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
-          height: auto;
-          max-height: 360px;
-          margin: 100px;
-
+      max-width: 700px;
+      padding: 20px;
+      background-color: #000;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+      height: auto;
+      max-height: 360px;
+      margin: auto;
+      padding-bottom: 30px;
     }
     .info-item {
       margin-bottom: 20px;
@@ -33,6 +34,20 @@
     }
     .info-item span {
       color: #ff0;
+    }
+    button {
+      background-color: rgba(255, 255, 0, 0.5);
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #ffff00;
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -67,6 +82,19 @@
       <label>Номер абонемента:</label>
       <span>{{data.subscription_number}}</span>
     </div>
+
+    <form action="/process" method="post" style="text-align: center;">
+      <input type="hidden" name="id" value="{{data.subscription_number}}">
+      <button class="button" type="submit" name="action" value="arrival">Приход</button>
+      <button class="button" type="submit" name="action" value="edit">Изменить</button>
+      <button class="button" type="submit" name="action" value="back">Назад</button>
+    </form>
   </div>
+
+  <script !src="">
+    {% if arrival == 'true' %}
+      alert('Успешно!')
+    {% endif %}
+  </script>
 </body>
 </html>

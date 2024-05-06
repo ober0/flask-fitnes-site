@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block head %}{% endblock %}
+    <style>
+        {% block style %}{% endblock %}
+        header {
+            background-color: #000;
+            color: #ff0; /* желтый цвет текста */
+            padding: 20px;
+            text-align: center;
+
+        }
+        header h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+        header nav {
+            margin-top: 10px;
+        }
+        header nav a {
+            display: inline-block; /* Добавляем это свойство для того, чтобы кнопки имели одинаковые размеры */
+            width: 175px; /* Установим фиксированную ширину кнопок */
+            height: 25px; /* Установим фиксированную высоту кнопок */
+            line-height: 25px; /* Центрируем текст по вертикали */
+            background-color: #ff0; /* желтый цвет кнопок */
+            color: #000; /* черный цвет текста */
+            text-decoration: none;
+            margin-right: 20px;
+            padding: 10px 20px; /* добавляем отступы в кнопках */
+            border-radius: 5px; /* скругляем углы кнопок */
+            transition: background-color 0.3s, transform 0.3s; /* добавляем анимацию изменения цвета и размера */
+        }
+        header nav a:hover {
+            background-color: #f60; /* оранжевый цвет кнопок при наведении */
+            transform: scale(1.1); /* увеличиваем размер кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Radical Gym</h1>
+        <br>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/new_subscription">Новый абонемент</a>
+            <a href="/view_arrivals">Просмотр приходов</a>
+        </nav>
+    </header>
+
+    {% block html %}{% endblock %}
+</body>
+</html>

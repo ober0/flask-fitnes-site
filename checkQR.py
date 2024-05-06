@@ -6,8 +6,7 @@ def check_qr():
         id = f.read()
     if id != '':
         try:
-            decoded_data = json.loads(id)
-            abn_id = (decoded_data['subscription_number'])
+            abn_id = id
             return abn_id
         except:
             f.close()
