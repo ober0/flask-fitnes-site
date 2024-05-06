@@ -32,6 +32,7 @@ class Arrivals(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     abn_id = db.Column(db.String(80))
     name = db.Column(db.String(100))
+    locker_num = db.Column(db.String(80))
     date_arrival = db.Column(db.DateTime)
     def __repr__(self):
         return '<id %r>' % self.id
@@ -55,7 +56,7 @@ def index():
 def process():
     action = request.form['action']
     if action == 'arrival':
-        arrival = Arrivals(abn_id = request.form['abn_id'], name = request.form['name'], date_arrival = datetime.datetime.now())
+        arrival = Arrivals(abn_id = request.form['abn_id'], locker_num = request.form.get('locker'), name = request.form['name'], date_arrival = datetime.datetime.now())
         try:
             db.session.add(arrival)
             db.session.commit()

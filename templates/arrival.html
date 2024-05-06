@@ -15,14 +15,15 @@
         <table>
             <thead>
                 <tr>
-                    <th>Номер абонемента</th>
+                    <th>№ шкафа</th>
+                    <th>Клиент</th>
                     <th>Дата посещения</th>
                 </tr>
             </thead>
             <tbody>
                 {% for visit in data %}
                 <tr>
-
+                    <td>{{ visit.locker_num }}</td>
                     <td>{{ visit.abn_id }} {{visit.name}}</td>
                     {% if date != 'Все время' %}
                         <td>{{ visit.date_arrival.strftime('%H:%M:%S') }}</td>

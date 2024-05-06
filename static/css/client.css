@@ -43,3 +43,11 @@ button:hover {
   background-color: #f8b002;
   transform: scale(1.1);
 }
+input[name='locker'] {
+      width: 18px;
+      margin-right:5px;
+      background-color: #a59e9e;
+      color: #000;
+      border: 1px solid #ff0;
+      padding: 4px;
+    }
