@@ -15,7 +15,7 @@
             <input type="text" id="name" name="name" required>
         </div>
         <div class="form-group">
-            <label for="number">Номер:</label>
+            <label for="number">Номер телефона:</label>
             <input type="text" id="number" name="number" required>
         </div>
         <div class="form-group">
@@ -40,11 +40,5 @@
     </form>
 </div>
 
-<script>
-    function confirmEdit() {
-        if (confirm("Вы уверены, что хотите добавить абонемент?")) {
-            document.getElementById("editForm").submit();
-        }
-    }
-</script>
+<script src="{{ url_for('static', filename='js/new-user.js') }}"></script>
 {% endblock %}

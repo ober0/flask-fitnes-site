@@ -1,6 +1,6 @@
 import checkQR
 import secrets
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import threading
 import time
@@ -145,6 +145,22 @@ def delete():
         db.session.commit()
         return render_template('delete-success.html')
     return redirect('/')
+
+
+@app.route('/test')
+def test():
+    clients = Clients.query.all()
+    clients_data = [{'id': client.id,
+                     'Имя': client.name,
+                     'Номер телефона': client.phone_number,
+                     'Дата подписания': client.date_signing,
+                     'Дата активации': client.activate_date,
+                     'Заморозка': client.freezing,
+                     'Номер абонемента': client.subscription_number}
+                    for client in clients]
+    return jsonify(clients_data )
+
+
 
 if __name__ == '__main__':
     with app.app_context():

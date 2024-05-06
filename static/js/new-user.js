@@ -23,7 +23,7 @@ function confirmEdit() {
     }
 
     if (!error){
-        if (confirm("Вы уверены, что хотите редактировать абонемент?")) {
+        if (confirm("Вы уверены, что хотите добавить абонемент?")) {
             document.getElementById("editForm").submit();
         }
     }
@@ -31,15 +31,4 @@ function confirmEdit() {
         alert('Введите обязательные значения!')
     }
 
-
-
-}
-
-function confirmDelete(id) {
-    if (prompt('Введите пароль администратора') == 'adminradical'){
-        window.location.href = '/delete?id=' + id
-    }
-    else {
-        alert('Неверный пароль!')
-    }
 }
