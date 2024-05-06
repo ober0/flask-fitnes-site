@@ -4,53 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Информация о пользователе</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      max-width: 700px;
-      padding: 20px;
-      background-color: #000;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
-      height: auto;
-      max-height: 370px;
-      margin: auto;
-      padding-bottom: 30px;
-    }
-    .info-item {
-      margin-bottom: 20px;
-    }
-    .info-item label {
-      font-weight: bold;
-    }
-    .info-item span {
-      color: #ff0;
-    }
-    button {
-      background-color: rgba(255, 255, 0, 0.5);
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 10px;
-      transition: background-color 0.3s, transform 0.3s ;
-    }
-    button:hover {
-      background-color: #f8b002;
-      transform: scale(1.1);
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/client.css') }}">
 </head>
 <body>
   <div class="container">
