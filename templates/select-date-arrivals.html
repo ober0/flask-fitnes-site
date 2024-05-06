@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Выбор даты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select-date-arrivals.css') }}">
+{% endblock %}
+
+{% block html %}
+    <div class="container">
+        <h2 style="text-align: center;">Выбор даты</h2>
+        <form id="dateForm" action="/submit_date" method="post">
+            <div class="form-group">
+                <input type="checkbox" id="anyDate" name="any_date">
+                <label for="anyDate">Любая дата</label>
+            </div>
+            <div class="form-group" id="dateInput">
+                <label for="datepicker">Выберите дату:</label>
+                <input type="date" id="datepicker" name="date" required>
+            </div>
+            <div style="text-align: center">
+                <button type="button" class="btn-submit" onclick="submitDate()">Искать</button>
+            </div>
+        </form>
+    </div>
+
+<script src="{{ url_for('static', filename='js/select-date-arrival.js') }}"></script>
+{% endblock %}

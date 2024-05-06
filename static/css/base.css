@@ -29,3 +29,12 @@ header nav a:hover {
     background-color: #f60;
     transform: scale(1.1);
 }
+
+.a-glav{
+    color: #ff0;
+    text-decoration: none;
+    transition: font-size 0.3s;
+}
+.a-glav:hover{
+    font-size: 1.1em;
+}

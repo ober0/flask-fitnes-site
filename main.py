@@ -147,6 +147,26 @@ def delete():
     return redirect('/')
 
 
+@app.route('/submit_date', methods=['POST'])
+def submit_date():
+    if 'any_date' not in request.form:
+        arrivals = Arrivals.query.order_by(Arrivals.id).all()
+        date = request.form['date']
+        data = []
+        for el in arrivals:
+            if el.date_arrival.strftime('%Y-%m-%d') == date:
+                data.append(el)
+                2000-20-20
+        date = date[8:10] + '.' + date[5:7] + '.' + date[0:4]
+    else:
+        data = Arrivals.query.order_by(Arrivals.id.desc()).all()
+        date = 'Все время'
+
+
+    return render_template('arrival.html', data=data, date=date)
+
+
+
 @app.route('/test')
 def test():
     clients = Clients.query.all()
@@ -158,9 +178,12 @@ def test():
                      'Заморозка': client.freezing,
                      'Номер абонемента': client.subscription_number}
                     for client in clients]
-    return jsonify(clients_data )
+    return jsonify(clients_data)
 
 
+@app.route('/view_arrivals')
+def view_arrivals():
+    return render_template('select-date-arrivals.html')
 
 if __name__ == '__main__':
     with app.app_context():
