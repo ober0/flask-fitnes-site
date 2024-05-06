@@ -7,7 +7,7 @@ import time
 import webbrowser
 import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.secret_key = secrets.token_hex(16)
 
@@ -92,6 +92,26 @@ def edit():
         db.session.rollback()
         return e
 
+
+@app.route('/new_subscription', methods=['POST', 'GET'])
+def new_subscription():
+    if request.method == 'GET':
+        return render_template('new-user.html')
+    elif request.method == 'POST':
+        client = Clients(name=request.form['name'],
+                         phone_number=request.form['number'],
+                         date_signing=request.form['date_signing'],
+                         activate_date=request.form['activate_date'],
+                         freezing=request.form['freezing'],
+                         subscription_number=request.form['subscription_number']
+                         )
+        try:
+            db.session.add(client)
+            db.session.commit()
+            return redirect(f'/client?id={request.form["subscription_number"]}&arrival=success')
+        except Exception as e:
+            db.session.rollback()
+            return e
 @app.route('/client', methods=['GET'])
 def client():
     arrival = request.args.get('arrival')
@@ -115,6 +135,16 @@ def client():
         return render_template('client.html', data=data, arrival=arrival)
     else:
         return render_template('no-user.html')
+
+@app.route('/delete')
+def delete():
+    id_to_remove = request.args.get('id')
+    client = Clients.query.filter_by(id=id_to_remove).first()
+    if client:
+        db.session.delete(client)
+        db.session.commit()
+        return render_template('delete-success.html')
+    return redirect('/')
 
 if __name__ == '__main__':
     with app.app_context():

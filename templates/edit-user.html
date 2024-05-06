@@ -1,0 +1,50 @@
+
+{%extends "base.html"%}
+{% block head %}
+<title>Редактирование абонемента</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit-user.css') }}">
+{% endblock %}
+
+
+
+
+{% block html %}
+<div class="container">
+    <h2 style="text-align: center;">Редактирование абонемента</h2>
+    <form id="editForm" action="/edit" method="post">
+        <input type="hidden" name="id" value="{{ data.id }}">
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" value="{{ data.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Номер:</label>
+            <input type="text" id="number" name="number" value="{{ data.phone_number }}" required>
+        </div>
+        <div class="form-group">
+            <label for="date_signing">Дата подписания:</label>
+            <input type="text" id="date_signing" name="date_signing" value="{{ data.date_signing }}" required>
+        </div>
+        <div class="form-group">
+            <label for="activate_date">Дата активации:</label>
+            <input type="text" id="activate_date" name="activate_date" value="{{ data.activate_date }}" required>
+        </div>
+        <div class="form-group">
+            <label for="freezing">Заморозка:</label>
+            <input type="text" id="freezing" name="freezing" value="{{ data.freezing }}" required>
+        </div>
+        <div class="form-group">
+            <label for="subscription_number">Номер абонемента:</label>
+            <input type="text" id="subscription_number" name="subscription_number" value="{{ data.subscription_number }}" required>
+        </div>
+        <div style="text-align: center">
+            <button type="button" class="btn-edit" onclick="confirmEdit()">Редактировать</button>
+            <button type="button" class="btn-delete" onclick="confirmDelete({{ data.id }})">Удалить</button>
+
+        </div>
+    </form>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/edit.js') }}"></script>
+{% endblock %}

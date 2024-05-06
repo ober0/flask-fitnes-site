@@ -22,7 +22,7 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
       height: auto;
-      max-height: 360px;
+      max-height: 370px;
       margin: auto;
       padding-bottom: 30px;
     }
@@ -44,9 +44,10 @@
       border-radius: 5px;
       cursor: pointer;
       margin-right: 10px;
+      transition: background-color 0.3s, transform 0.3s ;
     }
     button:hover {
-      background-color: #ffff00;
+      background-color: #f8b002;
       transform: scale(1.1);
     }
   </style>
@@ -87,7 +88,7 @@
       <input type="hidden" name="id" value="{{data.subscription_number}}">
       <button class="button" type="submit" name="action" value="arrival">Приход</button>
       <button class="button" type="submit" name="action" value="edit">Изменить</button>
-      <button class="button" type="submit" name="action" value="back">Назад</button>
+      <button class="button" type="submit" name="action" value="back">На главную</button>
     </form>
   </div>
 

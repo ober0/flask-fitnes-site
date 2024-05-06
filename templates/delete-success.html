@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Успешное удаление</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete-success.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Успешное удаление!</h1>
+        <h3>Абонемент успешно удален.</h3>
+        <br>
+        <p id="timer" >Переадрессация назад через 3сек</p>
+        <p><a href="/">Или нажмите сюда</a></p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/success-remove.js') }}"></script>
+</body>
+</html>
