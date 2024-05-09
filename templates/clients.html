@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Radical Gym</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <style>
         body {
             background-color: black;
@@ -45,9 +46,12 @@
     <div class="container">
         <h1>Уточните:</h1>
         <ul>
-            {% for el in data %}
-            <li><a href="/client?table_id={{ el.id }}">{{ el.name }}</a></li>
-            {% endfor %}
+                {% for el in data %}
+                <li><a href="/client?table_id={{ el.id }}">{{ loop.index }}) {{ el.name }}</a></li>
+                {% endfor %}
+            <form action="/" method="get">
+                <input type="submit" value="Назад">
+            </form>
         </ul>
     </div>
 </body>

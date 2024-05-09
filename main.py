@@ -6,6 +6,7 @@ import threading
 import time
 import webbrowser
 import datetime
+from sqlalchemy import func
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -134,6 +135,17 @@ def client():
         client = Clients.query.filter_by(id=request.args.get('table_id')).all()
     else:
         client = Clients.query.filter_by(subscription_number=client_subscription_number).all()
+    if not client:
+        res = []
+        clients = Clients.query.all()
+        for i in clients:
+            if client_subscription_number.lower() in i.name.lower():
+                res.append(i)
+
+        if len(res) == 0:
+            client = None
+        else:
+            client = res
     if client:
         if len(client) == 1:
             client = client[0]
@@ -168,6 +180,7 @@ def client():
                 datas.append(data)
             return render_template('clients.html', data=datas, arrival=arrival)
     else:
+
         return render_template('no-user.html')
 
 @app.route('/delete')
@@ -215,7 +228,6 @@ def test():
                      'Время': client.time}
                     for client in clients]
     return jsonify(clients_data)
-
 
 @app.route('/view_arrivals')
 def view_arrivals():
