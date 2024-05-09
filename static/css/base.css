@@ -42,3 +42,28 @@ header nav a:hover {
 .a-glav:hover{
     font-size: 1.1em;
 }
+
+#exitSession {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 300px;
+    position: absolute;
+    left: 75%;
+    top: 2.5%;
+}
+
+#exitSession h1 {
+    flex-grow: 1;
+    max-width: 300px;
+    font-size: 30px;
+    position: relative;
+}
+
+#exitSession > a {
+    width: 80px;
+    height: 20px;
+    padding: 9px;
+    background-color: red;
+    text-align: center;
+}

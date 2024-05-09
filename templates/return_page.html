@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/no-user.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="message">
+      <h1>{{ title }}</h1>
+      <h3>{{ about }}</h3>
+      <br>
+      <p id="timer" >Переадрессация назад через 3сек</p>
+      <p><a href="{{ href_to_back }}">Или нажмите сюда</a></p>
+    </div>
+  </div>
+
+  <script !src="">
+      function updateTimer() {
+          document.getElementById('timer').innerText = "Переадрессация назад через " + time/1000 + " сек";
+          if (time <= 0){
+            window.location.href = '{{ href_to_back }}';
+          }
+          else {
+            time -= 100;
+            setTimeout(updateTimer, 100);
+          }
+        }
+        var time = {{ time }};
+        updateTimer();
+  </script>
+</html>

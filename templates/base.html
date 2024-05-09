@@ -12,16 +12,22 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1><a class='a-glav' href="/">Radical Gym</a></h1>
-        <br>
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/new_subscription">Новый абонемент</a>
-            <a href="/view_arrivals">Просмотр приходов</a>
-        </nav>
-    </header>
+<header>
+    <nav id="exitSession">
+        <h1 {% block if_admin_color %}{% endblock %}>{% block user_name %}{% endblock %}</h1>
+        <a href="/exit_session">Выйти</a>
+    </nav>
+    <h1><a class='a-glav' href="/">Radical Gym</a></h1>
+    <br>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/new_subscription">Новый абонемент</a>
+        <a href="/view_arrivals">Просмотр приходов</a>
+        {% block only_admin %}{% endblock %}
+    </nav>
 
-    {% block html %}{% endblock %}
+</header>
+
+{% block html %}{% endblock %}
 </body>
 </html>

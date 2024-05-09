@@ -6,7 +6,21 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
+{% block only_admin %}
+    {% if isAdmin == 'True' %}
+   <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
+    {% endif %}
+{% endblock %}
 
+{% block if_admin_color %}
+    {% if isAdmin == 'True' %}
+    style="color: pink"
+    {% endif %}
+{% endblock %}
+
+{% block user_name %}
+{{ userName }}
+{% endblock %}
 
 
 {% block html %}

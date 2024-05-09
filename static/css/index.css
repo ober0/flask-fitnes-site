@@ -19,6 +19,22 @@ input[type="text"] {
   border: none;
   border-radius: 5px;
 }
+
+input[type="password"] {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+}
+.input-field select {
+    width: 85%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+}
+
 input[type="submit"] {
   background-color: #ff0;
   color: #000;
@@ -29,6 +45,6 @@ input[type="submit"] {
   transition: background-color 0.3s, transform 0.3s;
 }
 input[type="submit"]:hover {
-  background-color: #de792f;
+  background-color: #f4730d;
   transform: scale(1.1);
 }

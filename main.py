@@ -1,6 +1,8 @@
+from sqlalchemy.testing.pickleable import User
+
 import checkQR
 import secrets
-from flask import Flask, render_template, redirect, request, jsonify
+from flask import Flask, render_template, redirect, request, jsonify, session, abort
 from flask_sqlalchemy import SQLAlchemy
 import threading
 import time
@@ -24,6 +26,7 @@ class Clients(db.Model):
     subscription_number = db.Column(db.String(100))
     summa = db.Column(db.String(100))
     time = db.Column(db.String(100))
+    admin = db.Column(db.String(100))
 
     def __repr__(self):
         return '<id %r>' % self.id
@@ -35,8 +38,21 @@ class Arrivals(db.Model):
     name = db.Column(db.String(100))
     locker_num = db.Column(db.String(80))
     date_arrival = db.Column(db.DateTime)
+    admin = db.Column(db.String(100))
+
     def __repr__(self):
         return '<id %r>' % self.id
+
+
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80))
+    password = db.Column(db.String(80))
+    admin = db.Column(db.String(80))
+
+    def __repr__(self):
+        return '<id %r>' % self.id
+
 
 
 def check_qr():
@@ -49,15 +65,109 @@ def check_qr():
             webbrowser.open_new_tab(f'http://127.0.0.1:5000/client?id={result}')
 
 
+
+@app.route('/auth', methods=['POST'])
+def auth():
+    if request.method == "POST":
+        id = request.form['username']
+        password = request.form['password']
+
+        user = Users.query.filter_by(id=id).first()
+        if user:
+            if user.password == password:
+                session['auth_user'] = user.name
+                if user.admin == 'yes':
+                    session['auth_status'] = 'admin'
+                else:
+                    session['auth_status'] = 'user'
+                return redirect('/')
+        return render_template('auth.html', workers=Users.query.all(), not_succ='true')
+
+    return abort(404)
+
+@app.route('/delete-worker', methods=['GET', 'POST'])
+def delete_worker():
+    if request.method == "GET":
+        if "auth_user" in session:
+            if session['auth_status'] == 'admin':
+                return render_template('delete-worker.html', users=Users.query.all())
+            else:
+                return redirect('/auth')
+        else:
+            return redirect('/auth')
+    elif request.method == "POST":
+        print(1)
+        id = request.form['name']
+        user = Users.query.filter_by(id=id).first()
+        name = user.name
+
+        print(user.id, type(user.id))
+        if user.id != 1:
+            try:
+                db.session.delete(user)
+                db.session.commit()
+                return render_template('return_page.html',
+                                   title='Успешное удаление!',
+                                   about=f'Работник {name} успешно удален',
+                                   href_to_back='/delete-worker',
+                                   time=5000)
+            except Exception as e:
+                print(e)
+        else:
+            return render_template('return_page.html',
+                                   title='Отклонено!',
+                                   about=f'Нельзя удалить главного администратора',
+                                   href_to_back='/add-worker',
+                                   time=5000)
+    return abort(404)
+
+
+@app.route('/exit_session')
+def exit_session():
+    session.clear()
+    return redirect('/')
+
+
+@app.route('/add-worker', methods=['GET', 'POST'])
+def add_worker():
+    if request.method == "GET":
+        if 'auth_status' in session and session['auth_status'] == 'admin':
+            return render_template('new-worker.html', isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+    elif request.method == "POST":
+        name = request.form['name']
+        password = request.form['password']
+        admin = request.form['status']
+
+        user = Users(name=name, password=password, admin=admin)
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return render_template('return_page.html',
+                                   title='Успешное добавление!',
+                                   about=f'Работник {name} успешно добавлен',
+                                   href_to_back='/',
+                                   time=5000)
+        except Exception as e:
+            db.session.rollback()
+
+    return redirect('/')
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'auth_status' in session:
+        if session['auth_status'] == 'admin' or session['auth_status'] == 'user':
+            admin = str(session['auth_status'] == 'admin')
+            print(admin)
+            return render_template('index.html', isAdmin=admin, userName=session['auth_user'])
+    return render_template('auth.html', workers=Users.query.all())
+
 
 @app.route('/process', methods=['POST'])
 def process():
     action = request.form['action']
     if action == 'arrival':
-        arrival = Arrivals(abn_id = request.form['abn_id'], locker_num = request.form.get('locker'), name = request.form['name'], date_arrival = datetime.datetime.now())
+        arrival = Arrivals(abn_id = request.form['abn_id'], locker_num = request.form.get('locker'), name = request.form['name'], date_arrival = datetime.datetime.now(), admin=session['auth_user'])
         try:
             db.session.add(arrival)
             db.session.commit()
@@ -81,8 +191,10 @@ def process():
             'summa': user.summa,
             'time': user.time,
         }
-        return render_template('edit-user.html', data=user_data)
-
+        if 'auth_status' in session:
+            return render_template('edit-user.html', data=user_data, isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+        else:
+            return render_template('auth.html', workers=Users.query.all())
 @app.route('/edit', methods=['POST'])
 def edit():
     client = Clients.query.filter_by(subscription_number=request.form['subscription_number']).first()
@@ -105,7 +217,10 @@ def edit():
 @app.route('/new_subscription', methods=['POST', 'GET'])
 def new_subscription():
     if request.method == 'GET':
-        return render_template('new-user.html')
+        if 'auth_status' in session:
+            return render_template('new-user.html', isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+        else:
+            return render_template('auth.html', workers=Users.query.all())
     elif request.method == 'POST':
         client = Clients(name=request.form['name'],
                          phone_number=request.form['number'],
@@ -114,7 +229,8 @@ def new_subscription():
                          freezing=request.form['freezing'],
                          subscription_number=request.form['subscription_number'],
                          summa =request.form['summa'],
-                         time = request.form['time']
+                         time = request.form['time'],
+                         admin = session['auth_user']
                          )
         try:
             db.session.add(client)
@@ -122,7 +238,8 @@ def new_subscription():
             return redirect(f'/client?id={request.form["subscription_number"]}&arrival=success')
         except Exception as e:
             db.session.rollback()
-            return e
+            print(e)
+            return ''
 @app.route('/client', methods=['GET'])
 def client():
     arrival = request.args.get('arrival')
@@ -158,7 +275,8 @@ def client():
                 'freezing': client.freezing,
                 'subscription_number': client.subscription_number,
                 'summa': client.summa,
-                'time': client.time
+                'time': client.time,
+                'admin': client.admin
             }
 
 
@@ -175,7 +293,8 @@ def client():
                     'freezing': client.freezing,
                     'subscription_number': client_subscription_number,
                     'summa': client.summa,
-                    'time': client.time
+                    'time': client.time,
+                    'admin': client.admin
                 }
                 datas.append(data)
             return render_template('clients.html', data=datas, arrival=arrival)
@@ -209,9 +328,9 @@ def submit_date():
         data = Arrivals.query.order_by(Arrivals.id.desc()).all()
         date = 'Все время'
 
-
-    return render_template('arrival.html', data=data, date=date)
-
+    if 'auth_status' in session:
+        return render_template('arrival.html', data=data, date=date, isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+    return render_template('auth.html', workers=Users.query.all())
 
 
 @app.route('/test')
@@ -231,8 +350,10 @@ def test():
 
 @app.route('/view_arrivals')
 def view_arrivals():
-    return render_template('select-date-arrivals.html')
-
+    if 'auth_status' in session:
+        return render_template('select-date-arrivals.html', isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+    else:
+        return redirect('/')
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

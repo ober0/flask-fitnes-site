@@ -6,6 +6,18 @@
 {% endblock %}
 
 
+{% if isAdmin == true %}
+    {% block only_admin %}
+    <a href="/add-worker">Добавить работника</a>
+    {% endblock %}
+    {% block if_admin_color %}
+    style="color: pink"
+    {% endblock %}
+{% endif %}
+
+{% block user_name %}
+{{ userName }}
+{% endblock %}
 
 
 {% block html %}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель авторизации</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        {% if not_succ == 'true' %}
+        h2 {
+            color: red;
+        }
+        input[type='password']{
+            border: 3px solid red !important;
+        }
+        select{
+            border: 3px solid red !important;
+        }
+
+        {% endif %}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Вход</h2>
+    <form action="/auth" method="post">
+        <div class="input-field">
+            <select name="username">
+                {% for i in workers %}
+                <option value="{{ i.id }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-field">
+            <input type="password" name="password" placeholder="Пароль" required>
+        </div>
+        <div class="input-field">
+            <input type="submit" value="Войти">
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

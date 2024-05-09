@@ -1,0 +1,49 @@
+{%extends "base.html"%}
+
+{% block head %}
+<title>Добавление работника</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+{% endblock %}
+
+
+{% if isAdmin == true %}
+    {% block only_admin %}
+    <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
+    <a href="/delete-worker" style="background-color: red;">Удалить работника</a>
+    {% endblock %}
+    {% block if_admin_color %}
+    style="color: pink"
+    {% endblock %}
+{% endif %}
+
+{% block user_name %}
+{{ userName }}
+{% endblock %}
+
+
+
+{% block html %}
+<div class="container">
+    <h2>Новый пользователь</h2>
+<form action="/add-worker" method="post">
+    <div class="input-field">
+        <input type="text" name="name" placeholder="Имя" required>
+    </div>
+    <div class="input-field">
+        <input type="text" name="password" placeholder="Пароль" required>
+    </div>
+    <div class="input-field">
+        <label>Статус учетной записи:</label>
+        <select style="position: relative; top: 12px;" name="status">
+            <option value="no">user</option>
+            <option value="yes">admin</option>
+        </select>
+    </div>
+    <div class="input-field">
+        <br>
+        <input type="submit" value="Добавить">
+    </div>
+</form>
+</div>
+{% endblock %}

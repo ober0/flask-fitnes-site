@@ -4,6 +4,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/select-date-arrivals.css') }}">
 {% endblock %}
 
+
+{% if isAdmin == true %}
+    {% block only_admin %}
+    <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
+    {% endblock %}
+    {% block if_admin_color %}
+    style="color: pink"
+    {% endblock %}
+{% endif %}
+
+{% block user_name %}
+{{ userName }}
+{% endblock %}
+
+
 {% block html %}
     <div class="container">
         <h2 style="text-align: center;">Выбор даты</h2>
