@@ -1,14 +1,11 @@
-from sqlalchemy.testing.pickleable import User
-
 import checkQR
 import secrets
-from flask import Flask, render_template, redirect, request, jsonify, session, abort
+from flask import Flask, render_template, redirect, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
 import threading
 import time
 import webbrowser
 import datetime
-from sqlalchemy import func
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -63,7 +60,6 @@ def check_qr():
             with open('instance/check.txt', 'w') as f:
                 f.write('')
             webbrowser.open_new_tab(f'http://127.0.0.1:5000/client?id={result}')
-
 
 
 @app.route('/auth', methods=['POST'])
@@ -316,7 +312,7 @@ def delete():
 @app.route('/submit_date', methods=['POST'])
 def submit_date():
     if 'any_date' not in request.form:
-        arrivals = Arrivals.query.order_by(Arrivals.id).all()
+        arrivals = Arrivals.query.order_by(Arrivals.id.desc()).all()
         date = request.form['date']
         data = []
         for el in arrivals:
@@ -333,20 +329,6 @@ def submit_date():
     return render_template('auth.html', workers=Users.query.all())
 
 
-@app.route('/test')
-def test():
-    clients = Clients.query.all()
-    clients_data = [{'id': client.id,
-                     'Имя': client.name,
-                     'Номер телефона': client.phone_number,
-                     'Дата подписания': client.date_signing,
-                     'Дата активации': client.activate_date,
-                     'Заморозка': client.freezing,
-                     'Номер абонемента': client.subscription_number,
-                     'Сумма': client.summa,
-                     'Время': client.time}
-                    for client in clients]
-    return jsonify(clients_data)
 
 @app.route('/view_arrivals')
 def view_arrivals():
