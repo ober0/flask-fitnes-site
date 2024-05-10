@@ -36,7 +36,7 @@
         <div class="input-field">
             <select name="name">
               {% for user in users %}
-                <option value="{{user.id}}">{{user.name}}</option>
+                <option value="{{user.id}}">{{user.name}} - {% if user.admin == 'yes' %}admin{% else %}user{% endif %}</option>
               {% endfor %}
             </select>
         </div>

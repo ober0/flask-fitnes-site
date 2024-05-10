@@ -1,0 +1,73 @@
+
+{%extends "base.html"%}
+{% block head %}
+<title>Редактирование работника</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit-user.css') }}">
+<style>
+    .admin-workers-button{
+        margin: 20px;
+    }
+    .container{
+        width: 500px;
+        height: 370px;
+    }
+    #password{
+        width: 95%;
+    }
+</style>
+{% endblock %}
+
+
+
+{% if isAdmin == true %}
+    {% block only_admin %}
+    <br>
+    <div class="admin-workers-button">
+        <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
+        <a href="/edit-worker" style="background-color: #ec9600">Редактировать работника</a>
+        <a href="/delete-worker" style="background-color: red;">Удалить работника</a>
+    </div>
+
+
+    {% endblock %}
+    {% block if_admin_color %}
+    style="color: pink"
+    {% endblock %}
+{% endif %}
+
+{% block user_name %}
+{{ userName }}
+{% endblock %}
+
+
+{% block html %}
+<div class="container">
+    <h2 style="text-align: center;">Редактирование работника</h2>
+    <form id="editForm" action="/edit-worker" method="post">
+        <div class="form-group">
+            <select id="name" name="name" required>
+                {% for el in users %}
+                <option value="{{ el.id }}">{{ el.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="text" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="admin">Статус уч.з.:</label>
+            <select id="admin" name="admin" required>
+                    <option value="no">user</option>
+                    <option value="yes">admin</option>
+            </select>
+        </div>
+        <div style="text-align: center">
+            <button type="submit" class="btn-edit">Редактировать</button>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}

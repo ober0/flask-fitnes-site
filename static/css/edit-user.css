@@ -32,6 +32,14 @@ body {
     background-color: #333;
     color: #fff;
 }
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
 .btn-edit {
     float: left;
     background-color: #ff0;

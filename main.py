@@ -62,6 +62,44 @@ def check_qr():
             webbrowser.open_new_tab(f'http://127.0.0.1:5000/client?id={result}')
 
 
+@app.route('/edit-worker', methods=['GET', 'POST'])
+def edit_worker():
+    if request.method == 'GET':
+        if 'auth_status' in session:
+            if session['auth_status'] == 'admin':
+                return render_template('/edit-worker.html', isAdmin=(session['auth_status'] == 'admin'), users=Users.query.all())
+    elif request.method == 'POST':
+        id = request.form['name']
+        password = request.form['password']
+        admin = request.form['admin']
+
+        print(id)
+        if id != '1':
+            user = Users.query.filter_by(id=id).first()
+            user.password = password
+            user.admin = admin
+
+            try:
+                db.session.commit()
+                return render_template('return_page.html',
+                                       title='Успешно!',
+                                       about=f'Работник {user.name} обновлен!',
+                                       href_to_back='/add-worker',
+                                       time=5000)
+            except Exception as e:
+                db.session.rollback()
+                return render_template('return_page.html',
+                                       title='Ошибка',
+                                       about=f'Ошибка базы данных: {e}',
+                                       href_to_back='/edit-worker',
+                                       time=5000)
+        else:
+            return render_template('return_page.html',
+                                   title='Ошибка',
+                                   about=f'Нельзя редактировать Главного администратора',
+                                   href_to_back='/edit-worker',
+                                   time=5000)
+    return redirect('/')
 @app.route('/auth', methods=['POST'])
 def auth():
     if request.method == "POST":
@@ -188,7 +226,7 @@ def process():
             'time': user.time,
         }
         if 'auth_status' in session:
-            return render_template('edit-user.html', data=user_data, isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
+            return render_template('edit-user.html', users=Users.query.all(), data=user_data, isAdmin=(session['auth_status'] == 'admin'), userName=session['auth_user'])
         else:
             return render_template('auth.html', workers=Users.query.all())
 @app.route('/edit', methods=['POST'])
@@ -202,6 +240,9 @@ def edit():
     client.subscription_number = request.form['subscription_number']
     client.summa = request.form['summa']
     client.time = request.form['time']
+    if request.form.get('admin') != None:
+        client.admin = request.form.get('admin')
+
     try:
         db.session.commit()
         return redirect(f'/client?id={client.subscription_number}&arrival=success')

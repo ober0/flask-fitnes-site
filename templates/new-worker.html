@@ -3,14 +3,32 @@
 {% block head %}
 <title>Добавление работника</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<style>
+    .admin-workers-button{
+        margin: 20px;
+    }
+    .container{
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        width: 550px;
+        transform: translate(-50%, 0);
+    }
+</style>
 
 {% endblock %}
 
 
 {% if isAdmin == true %}
     {% block only_admin %}
-    <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
-    <a href="/delete-worker" style="background-color: red;">Удалить работника</a>
+    <br>
+    <div class="admin-workers-button">
+        <a href="/add-worker" style="background-color: #17f117;">Добавить работника</a>
+        <a href="/edit-worker" style="background-color: #ec9600">Редактировать работника</a>
+        <a href="/delete-worker" style="background-color: red;">Удалить работника</a>
+    </div>
+
+
     {% endblock %}
     {% block if_admin_color %}
     style="color: pink"

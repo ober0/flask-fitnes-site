@@ -3,6 +3,13 @@
 {% block head %}
 <title>Редактирование абонемента</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/edit-user.css') }}">
+{% if isAdmin == true %}
+<style>
+    #editForm{
+        height: 770px !important;
+    }
+</style>
+{% endif %}
 {% endblock %}
 
 
@@ -57,6 +64,16 @@
             <label for="time">Время:</label>
             <input type="text" id="time" name="time" value="{{ data.time }}" required>
         </div>
+        {% if isAdmin == true %}
+        <div class="form-group">
+            <label for="admin">Администратор</label>
+            <select id="admin" name="admin">
+                {% for el in users %}
+                <option value="{{el.name}}">{{el.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
         <div style="text-align: center">
             <button type="button" class="btn-edit" onclick="confirmEdit()">Редактировать</button>
             <button type="button" class="btn-delete" onclick="confirmDelete({{ data.id }})">Удалить</button>
