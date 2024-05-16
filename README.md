@@ -1,107 +1,107 @@
+# Client and Visit Management Web Application
 
----
+This project is a web application for managing clients and their visits to a fitness club. It uses Flask as the web framework and SQLAlchemy for interacting with a SQLite database.
 
-# Веб-приложение учета клиентов и посещений
+## Installation
 
-Этот проект представляет собой веб-приложение для учета клиентов и их посещений в фитнес-клубе. Он использует Flask в качестве фреймворка для создания веб-приложения и SQLAlchemy для взаимодействия с базой данных SQLite.
+1. Clone the repository:
 
-## Установка
-
-1. Склонируйте репозиторий:
-
-    ```
-    git clone <Репозиторий>
+    ```bash
+    git clone <Repository>
     ```
 
-2. Перейдите в директорию проекта:
+2. Navigate to the project directory:
 
-    ```
+    ```bash
     cd your_project
     ```
 
-3. Установите зависимости:
+3. Install the dependencies:
 
-    ```
+    ```bash
     pip install -r requirements.txt
     ```
 
-## Запуск
+## Running the Application
 
-1. Запустите приложение:
+1. Start the application:
 
-    ```
+    ```bash
     python main.py
     ```
 
-2. Откройте веб-браузер и перейдите по адресу `http://127.0.0.1:5000/` для доступа к приложению.
+2. Open a web browser and go to `http://127.0.0.1:5000/` to access the application.
 
-## Использование
+## Usage
 
-### Создание нового клиента
+### Adding a New Client
 
-1. Перейдите на главную страницу приложения.
+1. Go to the application's main page.
 
-2. Нажмите кнопку "Новый клиент".
+2. Click the "New Client" button.
 
-3. Введите данные нового клиента и нажмите кнопку "Добавить".
+3. Enter the new client's details and click the "Add" button.
 
-### Редактирование информации о клиенте
+### Editing Client Information
 
-1. На главной странице приложения найдите нужного клиента.
+1. On the main page, find the client you want to edit.
 
-2. Нажмите кнопку "Изменить" рядом с его данными.
+2. Click the "Edit" button next to their details.
 
-3. Внесите необходимые изменения и нажмите кнопку "Сохранить".
+3. Make the necessary changes and click the "Save" button.
 
-### Посещение клиентом зала
+### Registering a Client's Visit
 
-1. На главной странице приложения найдите нужного клиента.
+1. On the main page, find the client you want to check in.
 
-2. Введите номер его шкафчика и нажмите кнопку "Приход".
+2. Enter their locker number and click the "Check In" button.
 
-3. Клиент будет отмечен как пришедший, и его данные будут обновлены.
+3. The client will be marked as present, and their information will be updated.
 
-### Просмотр списка клиентов и посещений
+### Viewing Clients and Visits
 
-1. На главной странице приложения вы можете видеть список всех клиентов.
+1. On the main page, you can see a list of all clients.
 
-2. Вы также можете просматривать посещения по определенной дате или за все время.
+2. You can also view visits for a specific date or all-time visits.
 
-### Создание нового работника
+### Adding a New Employee
 
-1. Перейдите на страницу "Добавить работника".
+1. Go to the "Add Employee" page.
 
-2. Введите данные нового работника и нажмите кнопку "Добавить".
+2. Enter the new employee's details and click the "Add" button.
 
-### Удаление работника
+### Deleting an Employee
 
-1. Перейдите на страницу "Удалить работника".
+1. Go to the "Delete Employee" page.
 
-2. Выберите работника из списка и нажмите кнопку "Удалить".
+2. Select the employee from the list and click the "Delete" button.
 
-3. Подтвердите удаление через диалоговое окно.
+3. Confirm the deletion in the dialog box.
 
-### Редактирование информации о работнике
+### Editing Employee Information
 
-1. Перейдите на страницу "Изменить информацию о работнике".
+1. Go to the "Edit Employee Information" page.
 
-2. Выберите работника из списка и внесите необходимые изменения.
+2. Select the employee from the list and make the necessary changes.
 
-3. Нажмите кнопку "Сохранить".
+3. Click the "Save" button.
 
-### Просмотр списка работников
+### Viewing Employees
 
-1. На главной странице приложения вы можете видеть список всех работников.
+1. On the main page, you can see a list of all employees.
 
-2. Вы также можете просматривать подробную информацию о каждом работнике.
-   
-## Автор
+2. You can also view detailed information about each employee.
 
-- tg Oberrrr
-- ds ober0
+### View expiring subscriptions
 
-## Лицензия
+1. Go to the "View order account" page.
+2. The page will display subscriptions in the form of a table that expire in the next 30 days
 
-Этот проект лицензирован в соответствии с [Лицензией](LICENSE).
+## Author
 
----
+- tg: Oberrrr
+- ds: ober0
+
+## License
+
+This project is licensed under the [LICENSE](LICENSE).
