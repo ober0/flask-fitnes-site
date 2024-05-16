@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% if isAdmin == true %}
+    {% block if_admin_color %}
+    style="color: pink"
+    {% endblock %}
+{% endif %}
+
+{% block user_name %}
+    {{ name }}
+{% endblock %}
+
+{% block head %}
+<title>Заканчивающиеся абонементы</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+{% endblock %}
+
+
+{% block html %}
+<div class="all">
+    <div class="container">
+    <h1>Список клиентов</h1>
+    <h2>С заканчивающимися абонементами в ближайший месяц</h2>
+    <h3>Конец: {{ day }}.{{ month }}.{{ year }} - {{ day_ended }}.{{ month_ended }}.{{ year_ended }}</h3>
+    </div>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Номер абонемента</th>
+                    <th>Имя</th>
+                    <th>Номер телефона</th>
+                    <th>Дата активации</th>
+                    <th>Заморозка</th>
+                    <th>Сумма</th>
+                    <th>Админ</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{client.subscription_number}}</td>
+                    <td>{{client.name}}</td>
+                    <td>{{client.phone_number}}</td>
+                    <td>{{client.activate_date}}</td>
+                    <td>{{client.freezing}}</td>
+                    <td>{{client.summa}}</td>
+                    <td>{{client.admin}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<form action="/import_to_excel"></form>
+</div>
+
+
+{% endblock %}

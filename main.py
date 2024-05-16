@@ -52,6 +52,63 @@ class Users(db.Model):
 
 
 
+@app.route('/check_last')
+def check_last():
+    clients = []
+    clients_noNumber = []
+    if 'auth_status' in session:
+        if session['auth_status'] == 'admin' or session['auth_status'] == 'user':
+            clients_db = Clients.query.all()
+            for el_full in clients_db:
+                el = el_full.activate_date
+                phone_number = el_full.phone_number
+                if str(el).count('-') == 1:
+                    try:
+                        year = str(el).split('-')[1].split('.')[2]
+                        month = str(el).split('-')[1].split('.')[1]
+                        day = str(el).split('-')[1].split('.')[0]
+                        year_now = datetime.datetime.utcnow().strftime('%Y')
+                        month_now = datetime.datetime.utcnow().strftime('%m')
+                        day_now = datetime.datetime.utcnow().strftime('%d')
+                        if year == year_now[2:] or year == year_now or (month_now == '12' and int(year) == int(year_now + 1)):
+                            if int(day) >= int(day_now):
+                                if month == month_now:
+                                    if len(str(phone_number)) > 6:
+                                        clients.append(el_full)
+                                    else:
+                                        clients_noNumber.append(el_full)
+                            else:
+                                if int(month) == (int(month_now) + 1):
+                                    if len(str(phone_number)) > 6:
+                                        clients.append(el_full)
+                                    else:
+                                        clients_noNumber.append(el_full)
+                    except IndexError:
+                        pass
+            day_ended = str(int(day_now) - 1)
+            if len(day_ended) == 1:
+                day_ended = f'0{day_ended}'
+            month_ended = str(int(month_now) + 1)
+            if len(month_ended) == 1:
+                month_ended = f'0{month_ended}'
+            year_ended = str(year)
+            if len(year_ended) == 2:
+                year_ended = f'20{year_ended}'
+
+            for i in clients_noNumber:
+                clients.append(i)
+            return render_template('table.html',
+                                   clients=clients,
+                                   day=day_now,
+                                   month=month_now,
+                                   year=year_now,
+                                   day_ended=day_ended,
+                                   month_ended=month_ended,
+                                   year_ended=year_ended,
+                                   isAdmin=session['auth_status'] == 'admin',
+                                   name=session['auth_user']
+                                   )
+    return redirect('/')
 def check_qr():
     while True:
         time.sleep(0.3)
