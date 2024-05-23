@@ -14,6 +14,15 @@
 {% block head %}
 <title>Заканчивающиеся абонементы</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+<style>
+    .link{
+
+        color: white;
+    }
+    .link:hover{
+        color: yellow;
+    }
+</style>
 {% endblock %}
 
 
@@ -28,8 +37,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>Номер абонемента</th>
-                    <th>Имя</th>
+                    <th><a class="link" href="/check_last?filter=abn_num">Номер абонемента</a></th>
+                    <th><a class="link" href="/check_last?filter=name">Имя</a></th>
                     <th>Номер телефона</th>
                     <th>Дата активации</th>
                     <th>Заморозка</th>

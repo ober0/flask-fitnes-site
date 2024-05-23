@@ -8,7 +8,8 @@ import webbrowser
 import datetime
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
-from functools import wraps
+from sqlalchemy import case, cast, Integer
+
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -52,7 +53,7 @@ class Users(db.Model):
     def __repr__(self):
         return '<id %r>' % self.id
 
-class UserAdmin(ModelView):
+class ClientsModel(ModelView):
     column_filters = ('name', 'phone_number', 'subscription_number', 'summa', 'time', 'admin')
     column_searchable_list = ('name', 'phone_number', 'subscription_number')
 
@@ -61,10 +62,16 @@ class MyAdminIndexView(AdminIndexView):
     def index(self):
         if 'auth_status' not in session or session['auth_status'] != 'admin':
             return redirect('/')
-        return super(MyAdminIndexView, self).index()
+        return super().index()
+
+    @expose('/client')
+    def clients(self):
+        if 'auth_status' not in session or session['auth_status'] != 'admin':
+            return redirect('/')
+        return super().index()
 
 admin = Admin(app, name='Admin Panel', template_mode='bootstrap3', index_view=MyAdminIndexView())
-admin.add_view(UserAdmin(Clients, db.session))
+admin.add_view(ClientsModel(Clients, db.session))
 
 
 
@@ -74,7 +81,43 @@ def check_last():
     clients_noNumber = []
     if 'auth_status' in session:
         if session['auth_status'] == 'admin' or session['auth_status'] == 'user':
-            clients_db = Clients.query.all()
+            filter = request.args.get('filter')
+            if 'abn_num' not in session:
+                session['abn_num'] = 0
+            if 'name' not in session:
+                session['name'] = 0
+            if filter == 'abn_num':
+                if session['abn_num'] == 0:
+                    session['abn_num'] = 1
+                    clients_db = Clients.query.order_by(
+                        case(
+                            (Clients.subscription_number == '?', None),
+                            else_=cast(Clients.subscription_number, Integer)
+                        ).desc()
+                    ).all()
+                elif session['abn_num'] == 1:
+                    session['abn_num'] = 2
+                    clients_db = Clients.query.order_by(
+                        case(
+                            (Clients.subscription_number == '?', None),
+                            else_=cast(Clients.subscription_number, Integer)
+                        )
+                    ).all()
+                elif session['abn_num'] == 2:
+                    session['abn_num'] = 0
+                    clients_db = Clients.query.all()
+            elif filter == 'name':
+                if session['name'] == 0:
+                    session['name'] = 1
+                    clients_db = Clients.query.order_by(Clients.name.desc()).all()
+                elif session['name'] == 1:
+                    session['name'] = 2
+                    clients_db = Clients.query.order_by(Clients.name).all()
+                elif session['name'] == 2:
+                    session['name'] = 0
+                    clients_db = Clients.query.all()
+            else:
+                clients_db = Clients.query.all()
             for el_full in clients_db:
                 el = el_full.activate_date
                 phone_number = el_full.phone_number
@@ -457,7 +500,5 @@ if __name__ == '__main__':
     qr_thread = threading.Thread(target=check_qr)
     qr_thread.daemon = True
     qr_thread.start()
-
-    #webbrowser.open('http://127.0.0.1:5000')
 
     app.run(debug=True)
