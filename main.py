@@ -1,14 +1,18 @@
 import checkQR
 import secrets
-from flask import Flask, render_template, redirect, request, session, abort
+from flask import Flask, render_template, redirect, request, session, abort, url_for
 from flask_sqlalchemy import SQLAlchemy
 import threading
 import time
 import webbrowser
 import datetime
+from flask_admin import Admin, AdminIndexView, expose
+from flask_admin.contrib.sqla import ModelView
+from functools import wraps
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
 app.secret_key = secrets.token_hex(16)
 
 db = SQLAlchemy(app)
@@ -28,7 +32,6 @@ class Clients(db.Model):
     def __repr__(self):
         return '<id %r>' % self.id
 
-
 class Arrivals(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     abn_id = db.Column(db.String(80))
@@ -40,7 +43,6 @@ class Arrivals(db.Model):
     def __repr__(self):
         return '<id %r>' % self.id
 
-
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
@@ -49,6 +51,20 @@ class Users(db.Model):
 
     def __repr__(self):
         return '<id %r>' % self.id
+
+class UserAdmin(ModelView):
+    column_filters = ('name', 'phone_number', 'subscription_number', 'summa', 'time', 'admin')
+    column_searchable_list = ('name', 'phone_number', 'subscription_number')
+
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        if 'auth_status' not in session or session['auth_status'] != 'admin':
+            return redirect('/')
+        return super(MyAdminIndexView, self).index()
+
+admin = Admin(app, name='Admin Panel', template_mode='bootstrap3', index_view=MyAdminIndexView())
+admin.add_view(UserAdmin(Clients, db.session))
 
 
 
